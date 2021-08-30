@@ -1,0 +1,217 @@
+<div class="row" id="app">
+    <div class="col-sm-12 p-0">
+        <div class="main-header">
+            <h4>Quản lý sản phẩm</h4>
+            <ol class="breadcrumb breadcrumb-title breadcrumb-arrow">
+            <li class="breadcrumb-item">
+                <a href="index.html">
+                    <i class="icofont icofont-home"></i>
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="#"> Quản lý sản phẩm</a>
+            </li>
+            <!--<li class="breadcrumb-item"><a href="#">Accordion</a>-->
+            </li>
+            </ol>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-block">
+                <div class="row ms">
+                    <div class="col-sm-12">
+                        <button type="button" class="btn btn-success btn-icon waves-effect waves-light">
+                            <i class="icofont icofont-plus"></i>
+                        </button>
+                    </div>
+                    <div class="col-sm-12 table-responsive">
+                        <el-tabs v-model="activeName" @tab-click="handleClick">
+                            <el-row :gutter="20">
+                                <el-col :span="6">
+                                    <el-input placeholder="Mã,tên,..."
+                                                v-model="searchIndex"
+                                                clearable>
+                                    </el-input>
+                                </el-col>
+                                <el-col :span="12">
+                                    <el-row :gutter="20">
+                                        <el-col :span="10">
+                                            <el-select v-model="value" placeholder="Select" class="w-100">
+                                                <el-option
+                                                    v-for="item in optionsAction"
+                                                    :key="item.value"
+                                                    :label="item.label"
+                                                    :value="item.value">
+                                                </el-option>
+                                            </el-select>
+                                        </el-col>
+                                        <el-col :span="10">
+                                            <button type="button" class="btn btn-success waves-effect waves-light btn-action-ms">
+                                                <i class="icofont icofont-save"></i>
+                                            </button>
+                                        </el-col>
+                                    </el-row>
+                                </el-col>
+                                <el-col :span="6">
+                                    <div class="dropdown-warning float-right">
+                                        <button class="btn btn-warning dropdown-toggle waves-effect waves-light" type="button" id="dropdown4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-filter" aria-hidden="true"></i></button>
+                                        <div class="filter dropdown-menu" aria-labelledby="dropdown4" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                            <h6 class="dropdown-header">Sắp xếp</h6>
+                                            <a v-for="item in valueSorf" class="dropdown-item waves-light waves-effect" href="#" v-text="item.label"></a>
+                                        </div>
+                                    </div>
+                                </el-col>
+                            </el-row>
+                            <!--Tất cả sản phẩm-->
+                            <el-tab-pane :label="'Tất cả sản phẩm(' + countIndex +')'" name="index">
+                                <table class="table table-hover">
+                                    {{> product/thead}}
+                                    <tbody v-loading="loading">
+                                        <tr v-for='(item, index) in tableData'>
+                                            <td>
+                                                <div class="rkmd-checkbox checkbox-rotate checkbox-ripple">
+                                                    <label class="input-checkbox checkbox-primary">
+                                                        <input type="checkbox" id="checkbox">
+                                                        <span class="checkbox"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td class="code-ms" v-text="index + 1"></td>
+                                            <td>
+                                                <img :src="item.image" alt="" class="img-proudct">
+                                            </td>
+                                            <td v-text="item.code"></td>
+                                            <td v-text="item.name"></td>
+                                            <td>
+                                                <label class="badge badge-inverse-danger" v-text="item.quanlity"></label>
+                                                <label class="badge bg-danger" v-text="item.quantitysold"></label>
+                                            </td>
+                                            <td v-text="item.price"></td>
+                                            <td v-text="item.dateupdate"></td>
+                                            <td v-text="item.userupdate"></td>
+                                            <td class="action-ms">
+                                                <span><i class="fa fa-trash" aria-hidden="true"></i></span> |
+                                                <span><i class="fa fa-eye" aria-hidden="true"></i></span> |
+                                                <span><i class="fas fa-edit"></i></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </el-tab-pane>
+                            <!--Tất cả sản phẩm theo dõi-->
+                            <el-tab-pane :label="'Sản phẩm theo dõi(' + countFollow +')'" name="follow">
+                                <table class="table table-hover">
+                                    {{> product/thead}}
+                                    <tbody v-loading="loading">
+                                        <tr v-for='(item, index) in tableFollowData'>
+                                            <td>
+                                                <div class="rkmd-checkbox checkbox-rotate checkbox-ripple">
+                                                    <label class="input-checkbox checkbox-primary">
+                                                        <input type="checkbox" id="checkbox">
+                                                        <span class="checkbox"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td class="code-ms" v-text="index + 1"></td>
+                                            <td>
+                                                <img :src="item.image" alt="" class="img-proudct">
+                                            </td>
+                                            <td v-text="item.code"></td>
+                                            <td v-text="item.name"></td>
+                                            <td>
+                                                <label class="badge badge-inverse-danger" v-text="item.quanlity"></label>
+                                                <label class="badge bg-danger" v-text="item.quantitysold"></label>
+                                            </td>
+                                            <td v-text="item.price"></td>
+                                            <td v-text="item.dateupdate"></td>
+                                            <td v-text="item.userupdate"></td>
+                                            <td class="action-ms">
+                                                <span><i class="fa fa-trash" aria-hidden="true"></i></span> |
+                                                <span><i class="fa fa-eye" aria-hidden="true"></i></span> |
+                                                <span><i class="fas fa-edit"></i></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </el-tab-pane>
+                            <!--Tất cả sản phẩm chú ý-->
+                            <el-tab-pane :label="'Chú ý(' + countNote +')'" name="note">
+                                <table class="table table-hover">
+                                    {{> product/thead}}
+                                    <tbody v-loading="loading">
+                                        <tr v-for='(item, index) in tableNoteData'>
+                                            <td>
+                                                <div class="rkmd-checkbox checkbox-rotate checkbox-ripple">
+                                                    <label class="input-checkbox checkbox-primary">
+                                                        <input type="checkbox" id="checkbox">
+                                                        <span class="checkbox"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td class="code-ms" v-text="index + 1"></td>
+                                            <td>
+                                                <img :src="item.image" alt="" class="img-proudct">
+                                            </td>
+                                            <td v-text="item.code"></td>
+                                            <td v-text="item.name"></td>
+                                            <td>
+                                                <label class="badge badge-inverse-danger" v-text="item.quanlity"></label>
+                                                <label class="badge bg-danger" v-text="item.quantitysold"></label>
+                                            </td>
+                                            <td v-text="item.price"></td>
+                                            <td v-text="item.dateupdate"></td>
+                                            <td v-text="item.userupdate"></td>
+                                            <td class="action-ms">
+                                                <span><i class="fa fa-trash" aria-hidden="true"></i></span> |
+                                                <span><i class="fa fa-eye" aria-hidden="true"></i></span> |
+                                                <span><i class="fas fa-edit"></i></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </el-tab-pane>
+                            <!--Thùng rác-->
+                            <el-tab-pane :label="'Thùng rác(' + countBin +')'" name="bin">
+                                <table class="table table-hover">
+                                    {{> product/thead}}
+                                    <tbody v-loading="loading">
+                                        <tr v-for='(item, index) in tableBinData'>
+                                            <td>
+                                                <div class="rkmd-checkbox checkbox-rotate checkbox-ripple">
+                                                    <label class="input-checkbox checkbox-primary">
+                                                        <input type="checkbox" id="checkbox">
+                                                        <span class="checkbox"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td class="code-ms" v-text="index + 1"></td>
+                                            <td>
+                                                <img :src="item.image" alt="" class="img-proudct">
+                                            </td>
+                                            <td v-text="item.code"></td>
+                                            <td v-text="item.name"></td>
+                                            <td>
+                                                <label class="badge badge-inverse-danger" v-text="item.quanlity"></label>
+                                                <label class="badge bg-danger" v-text="item.quantitysold"></label>
+                                            </td>
+                                            <td v-text="item.price"></td>
+                                            <td v-text="item.dateupdate"></td>
+                                            <td v-text="item.userupdate"></td>
+                                            <td class="action-ms">
+                                                <span><i class="fa fa-trash" aria-hidden="true"></i></span> |
+                                                <span><i class="fa fa-eye" aria-hidden="true"></i></span> |
+                                                <span><i class="fas fa-edit"></i></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </el-tab-pane>
+                        </el-tabs>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/product/index.js"></script>

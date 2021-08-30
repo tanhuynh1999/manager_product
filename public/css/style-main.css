@@ -1,0 +1,86 @@
+/*Common*/
+.float-right{
+    float: right;
+}
+
+
+.ml-1{
+    margin-left: 10;
+}
+
+.row.ms tbody .rkmd-checkbox .input-checkbox{
+    position: inherit;
+    width: inherit;
+}
+.row.ms thead .rkmd-checkbox .input-checkbox{
+    top: -20px;
+    width: inherit;
+}
+
+.btn-action-ms{
+    height: 40px;
+}
+
+.filter.dropdown-menu{
+    left: -147px !important;
+}
+
+/*Icon*/
+.fa-question-circle{
+    cursor: help;
+}
+
+/*Element*/
+.el-tabs__item {
+    font-size: 13px !important;
+    font-weight: bold !important;
+}
+
+.el-input--suffix .el-input__inner {
+    border-radius: 0px 0px 0px 0px !important;
+}
+
+/*Table*/
+.table.table-hover .img-proudct{
+    width: 100px;
+    height: 100px;
+    border-radius: 10%;
+}
+
+.action-ms > span{
+    cursor: pointer;
+}
+
+.action-ms span .fa-trash:hover{
+    color: #ff5252;
+    font-size: 20px;
+}
+
+.action-ms span .fa-eye:hover{
+    color: #4CAF50 ;
+    font-size: 20px;
+}
+
+.action-ms span .fa-edit:hover{
+    color: #2196F3;
+    font-size: 20px;
+}
+
+.code-ms{
+    font-style: italic;
+    font-weight: 600px;
+}
+
+.fixed-create-ms{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
+
+.el-tabs__item.is-active {
+    color: navy !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+
