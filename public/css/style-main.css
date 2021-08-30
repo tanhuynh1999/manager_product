@@ -66,6 +66,31 @@
     font-size: 20px;
 }
 
+.action-ms span .fa-retweet:hover{
+    color: #f57c00;
+    font-size: 20px;
+}
+
+.action-ms span .fa-bell:hover{
+    color: #40c4ff;
+    font-size: 20px;
+}
+
+.action-ms span .fa-comment:hover{
+    color: brown;
+    font-size: 20px;
+}
+
+.action-ms span .fa-cog:hover{
+    color: black;
+    font-size: 20px;
+}
+
+.action-ms span .fa-bell-slash:hover{
+    color: #f57c00;
+    font-size: 20px;
+}
+
 .code-ms{
     font-style: italic;
     font-weight: 600px;

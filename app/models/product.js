@@ -37,8 +37,16 @@ const Porduct = new Schema({
         },
         userupdate: {
             type: String
+        },
+        bin: {
+            type: Boolean
+        },
+        follow: {
+            type: Boolean
+        },
+        note: {
+            type: Boolean
         }
-
 });
 
 module.exports = mongoose.model('Product', Porduct);

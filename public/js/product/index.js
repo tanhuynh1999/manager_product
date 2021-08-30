@@ -3,60 +3,9 @@ var Main = {
     data() {
         return {
             tableData: [],
-            tableBinData: [
-                {
-                    image: 'http://localhost:3000/images/product/goi-y-9-cach-phoi-do-nu-dep-style-cuc-chat8.jpg',
-                    code: 'BDD-111',
-                    name: 'Quần xấu quắc',
-                    quanlity: 5,
-                    quantitysold: 5,
-                    price: '20.000 vnđ',
-                    datecreate: '28/08/2021',
-                    usercreate: 'tanhuynh',
-                    dateupdate: '28/08/2021',
-                    userupdate: 'tanhuynh'
-                }
-            ],
-            tableFollowData: [
-                {
-                    image: 'http://localhost:3000/images/product/goi-y-9-cach-phoi-do-nu-dep-style-cuc-chat8.jpg',
-                    code: 'BDD-111',
-                    name: 'Quần xấu quắc theo dõi',
-                    quanlity: 5,
-                    quantitysold: 5,
-                    price: '20.000 vnđ',
-                    datecreate: '28/08/2021',
-                    usercreate: 'tanhuynh',
-                    dateupdate: '28/08/2021',
-                    userupdate: 'tanhuynh'
-                }
-            ],
-            tableNoteData: [
-                {
-                    image: 'http://localhost:3000/images/product/goi-y-9-cach-phoi-do-nu-dep-style-cuc-chat8.jpg',
-                    code: 'BDD-111',
-                    name: 'Quần xấu quắc chú ý',
-                    quanlity: 5,
-                    quantitysold: 5,
-                    price: '20.000 vnđ',
-                    datecreate: '28/08/2021',
-                    usercreate: 'tanhuynh',
-                    dateupdate: '28/08/2021',
-                    userupdate: 'tanhuynh'
-                },
-                {
-                    image: 'http://localhost:3000/images/product/goi-y-9-cach-phoi-do-nu-dep-style-cuc-chat8.jpg',
-                    code: 'BDD-111',
-                    name: 'Quần xấu quắc chú ý',
-                    quanlity: 5,
-                    quantitysold: 5,
-                    price: '20.000 vnđ',
-                    datecreate: '28/08/2021',
-                    usercreate: 'tanhuynh',
-                    dateupdate: '28/08/2021',
-                    userupdate: 'tanhuynh'
-                },
-            ],
+            tableBinData: [],
+            tableFollowData: [],
+            tableNoteData: [],
             optionsAction: [
                 {
                     value: 'follow',
@@ -109,6 +58,9 @@ var Main = {
     },
     mounted() {
         this.loadIndexProduct();
+        this.loadBinProduct();
+        this.loadFollowProduct();
+        this.loadNoteProduct();
     },
     methods: {
         handleClick(tab, event) {
@@ -119,15 +71,15 @@ var Main = {
             }
             else if(tab.name == 'follow')
             {
-                return this.countFollow = this.tableFollowData.length;
+                this.loadFollowProduct();
             }
             else if(tab.name == 'note')
             {
-                return this.countNote = this.tableNoteData.length;
+                this.loadNoteProduct();
             }
             else if(tab.name == 'bin')
             {
-                return this.countBin = this.tableBinData.length;
+                this.loadBinProduct();
             }
             return false;
         },
@@ -156,6 +108,166 @@ var Main = {
                 error: function (xhr, status, err) { }
             });
         },
+        loadBinProduct() {
+            let that = this;
+            that.tableBinData = [];
+            $.ajax({
+                url: '/json-bin-product',
+                type: "GET",
+                dataType: 'json',
+                async: true,
+                contentType: 'application/json; charset=UTF-8',
+                success: function (rs) {
+                    if (rs.success) {
+                        var data = JSON.parse(JSON.stringify(rs.data))
+                        data.forEach((item, index) => {
+                            that.tableBinData.push(item);
+                        })
+                        that.loading = false;
+                        that.countBin = data.length;
+                    }
+                    if (rs.error) {
+                        alert(rs.message);
+                    }
+                },
+                error: function (xhr, status, err) { }
+            });
+        },
+        loadFollowProduct() {
+            let that = this;
+            that.tableFollowData = [];
+            $.ajax({
+                url: '/json-follow-product',
+                type: "GET",
+                dataType: 'json',
+                async: true,
+                contentType: 'application/json; charset=UTF-8',
+                success: function (rs) {
+                    if (rs.success) {
+                        var data = JSON.parse(JSON.stringify(rs.data))
+                        data.forEach((item, index) => {
+                            that.tableFollowData.push(item);
+                        })
+                        that.loading = false;
+                        that.countFollow = data.length;
+                    }
+                    if (rs.error) {
+                        alert(rs.message);
+                    }
+                },
+                error: function (xhr, status, err) { }
+            });
+        },
+        loadNoteProduct() {
+            let that = this;
+            that.tableNoteData = [];
+            $.ajax({
+                url: '/json-note-product',
+                type: "GET",
+                dataType: 'json',
+                async: true,
+                contentType: 'application/json; charset=UTF-8',
+                success: function (rs) {
+                    if (rs.success) {
+                        var data = JSON.parse(JSON.stringify(rs.data))
+                        data.forEach((item, index) => {
+                            that.tableNoteData.push(item);
+                        })
+                        that.loading = false;
+                        that.countNote = data.length;
+                    }
+                    if (rs.error) {
+                        alert(rs.message);
+                    }
+                },
+                error: function (xhr, status, err) { }
+            });
+        },
+        binProduct(id, name, bin)
+        {
+            let that = this;
+            if(!bin)
+            {
+                this.$confirm('Bạn có chắc muốn xoá sản phẩm "'+name+'?', 'Xoá sản phẩm', {
+                    confirmButtonText: 'Xoá vào thùng rác',
+                    cancelButtonText: 'Đóng',
+                    type: 'warning'
+                  }).then(() => {
+                    $.ajax({
+                        url: '/product/'+id+'/bin',
+                        type: "GET",
+                        dataType: 'json',
+                        async: true,
+                        contentType: 'application/json; charset=UTF-8',
+                        success: function (rs) {
+                            if(rs.success)
+                            {
+                                that.loadIndexProduct();
+                                that.loadBinProduct();
+                                that.loadNoteProduct();
+                                that.loadFollowProduct();
+                                that.$message({
+                                    type: 'success',
+                                    message: 'Xoá ['+name+'] thành công!'
+                                });
+                            }
+                            else{
+                                that.$message({
+                                    type: 'success',
+                                    message: 'Xoá thất bại'
+                                });
+                            }
+                        },
+                        error: function (xhr, status, err) { }
+                    });
+                  }).catch(() => {
+                    that.$message({
+                      type: 'info',
+                      message: 'Đã huỷ xoá sản phẩm [ ' + name + ' ]'
+                    });          
+                  });
+            }
+            else{
+                this.$confirm('Bạn có chắc muốn khôi phục sản phẩm"'+name+'?', 'Khôi phục', {
+                    confirmButtonText: 'Khôi phục',
+                    cancelButtonText: 'Đóng',
+                    type: 'warning'
+                  }).then(() => {
+                    $.ajax({
+                        url: '/product/'+id+'/bin',
+                        type: "GET",
+                        dataType: 'json',
+                        async: true,
+                        contentType: 'application/json; charset=UTF-8',
+                        success: function (rs) {
+                            if(rs.success)
+                            {
+                                that.loadIndexProduct();
+                                that.loadBinProduct();
+                                that.loadNoteProduct();
+                                that.loadFollowProduct();
+                                that.$message({
+                                    type: 'success',
+                                    message: 'Khôi phục ['+name+'] thành công'
+                                });
+                            }
+                            else{
+                                that.$message({
+                                    type: 'success',
+                                    message: 'Xoá thất bại'
+                                });
+                            }
+                        },
+                        error: function (xhr, status, err) { }
+                    });
+                  }).catch(() => {
+                    that.$message({
+                      type: 'info',
+                      message: 'Đã huỷ khôi phục sản phẩm [ ' + name + ' ]'
+                    });          
+                  });
+            }
+        }
     }
 };
 var Ctor = Vue.extend(Main)
